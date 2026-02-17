@@ -3,13 +3,55 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | WebGLScreenOrientationDetect</title>
+    <title>Unity Web Player | Train Game</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+      /* ── Rotate Device Overlay (portrait mobile) ── */
+      #rotate-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #1a1a2e;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      #rotate-overlay .icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+        animation: rotatePhone 2s ease-in-out infinite;
+      }
+      #rotate-overlay .msg {
+        font-size: 18px;
+        opacity: 0.8;
+      }
+      @keyframes rotatePhone {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(90deg); }
+      }
+
+      /* Show overlay only on portrait mobile */
+      @media screen and (max-width: 768px) and (orientation: portrait) {
+        #rotate-overlay { display: flex !important; }
+        #unity-container { display: none !important; }
+      }
+    </style>
   </head>
   <body>
+    <!-- Rotate device overlay -->
+    <div id="rotate-overlay">
+      <div class="icon">📱</div>
+      <div class="msg">Please rotate your device to landscape mode</div>
+    </div>
+
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600></canvas>
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -18,26 +60,16 @@
       </div>
       <div id="unity-warning"> </div>
       <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
+        <div id="unity-logo-title-footer"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">WebGLScreenOrientationDetect</div>
+        <div id="unity-build-title">Train Game</div>
       </div>
     </div>
     <script>
-      var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
       function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
         function updateBannerVisibility() {
           warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
         }
@@ -56,81 +88,71 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/12b633bd10b635500d7ab6bdfc0f0925.loader.js";
+      var loaderUrl = buildUrl + "/Train_Build_6_2.loader.js";
       var config = {
-        dataUrl: buildUrl + "/71621f4732e32148270543780fcfa792.data.unityweb",
-        frameworkUrl: buildUrl + "/afd95380e82f7e4dcbb0bf1a2c821224.framework.js.unityweb",
-        codeUrl: buildUrl + "/9d1b05f7586b37a46b05a793142e6b43.wasm.unityweb",
+        arguments: [],
+        dataUrl: buildUrl + "/Train_Build_6_2.data.unityweb",
+        frameworkUrl: buildUrl + "/Train_Build_6_2.framework.js.unityweb",
+        codeUrl: buildUrl + "/Train_Build_6_2.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
-        productName: "WebGLScreenOrientationDetect",
-        productVersion: "0.1",
+        productName: "Train Game",
+        productVersion: "1.0",
         showBanner: unityShowBanner,
       };
 
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
+        // Mobile device style: fill the whole browser client area with the game canvas
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
-
-        watchScreen();
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
       } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
+        // Desktop style
         canvas.style.width = "960px";
         canvas.style.height = "600px";
       }
 
-      loadingBar.style.display = "block";
+      document.querySelector("#unity-loading-bar").style.display = "block";
 
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
         }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-          fullscreenButton.onclick = () => {
+          document.querySelector("#unity-loading-bar").style.display = "none";
+          document.querySelector("#unity-fullscreen-button").onclick = () => {
             unityInstance.SetFullscreen(1);
           };
+
+          // ── Fullscreen on first tap (mobile) ──
+          // Enters fullscreen + locks landscape on the first user interaction
+          if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            canvas.addEventListener('click', function goFullscreen() {
+              var elem = document.documentElement;
+              if (elem.requestFullscreen) {
+                elem.requestFullscreen().then(function() {
+                  // Try to lock landscape once in fullscreen
+                  if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock("landscape").catch(function() {});
+                  }
+                }).catch(function() {});
+              } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen(); // Safari
+              }
+              canvas.removeEventListener('click', goFullscreen);
+            }, { once: true });
+          }
+
         }).catch((message) => {
           alert(message);
         });
       };
-      document.body.appendChild(script);
 
-      var sWidth = window.innerWidth;
-      var sHeight = window.innerHeight;
-      function watchScreen() {
-        requestAnimationFrame(watchScreen);
-        if(sWidth !== window.innerWidth || sHeight != window.innerHeight){
-          if(window.onOrientationChange) {
-            window.onOrientationChange(window.orientation);
-          }
-          sWidth = window.innerWidth;
-          sHeight = window.innerHeight;
-          canvas.style.width = sWidth + 'px';
-          canvas.style.height = sHeight + 'px';
-        }
-      }
+      document.body.appendChild(script);
     </script>
   </body>
 </html>

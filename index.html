@@ -6,8 +6,49 @@
     <title>Unity Web Player | Train Game</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Add inside <head>, after the existing style.css link -->
+<style>
+  #rotate-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #1a1a2e;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  #rotate-overlay .icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    animation: rotatePhone 2s ease-in-out infinite;
+  }
+  #rotate-overlay .msg {
+    font-size: 18px;
+    opacity: 0.8;
+  }
+  @keyframes rotatePhone {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+  }
+
+  /* Show overlay only on portrait mobile */
+  @media screen and (max-width: 768px) and (orientation: portrait) {
+    #rotate-overlay { display: flex !important; }
+    #unity-container { display: none !important; }
+  }
+</style>
   </head>
   <body>
+    <!-- Add right after <body> -->
+    <div id="rotate-overlay">
+      <div class="icon">📱</div>
+      <div class="msg">Please rotate your device to landscape mode</div>
+    </div>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">

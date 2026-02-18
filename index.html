@@ -5,9 +5,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Start loading assets right away, to have them (partly) loaded already when they are requested -->
-  <link rel="preload" href="Build//6000.3.0f1-minsize-webgl2-manualBuild.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
-  <link rel="preload" href="Build/6000.3.0f1-minsize-webgl2-manualBuild.framework.js.unityweb" as="script">
-  <link rel="preload" href="Build/6000.3.0f1-minsize-webgl2-manualBuild.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="Build//6000.3.0f1-minsize-webgpu-manualBuild.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="Build/6000.3.0f1-minsize-webgpu-manualBuild.framework.js.unityweb" as="script">
+  <link rel="preload" href="Build/6000.3.0f1-minsize-webgpu-manualBuild.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
   <title>Train Game</title>
   <style>
     * {
@@ -108,14 +108,14 @@
       <div id="unity-loading-bar-inner"></div>
     </div>
   </div>
-  <script src="Build/6000.3.0f1-minsize-webgl2-manualBuild.loader.js"></script>
+  <script src="Build/6000.3.0f1-minsize-webgpu-manualBuild.loader.js"></script>
   <script>
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/6000.3.0f1-minsize-webgl2-manualBuild.loader.js";
+    var loaderUrl = buildUrl + "/6000.3.0f1-minsize-webgpu-manualBuild.loader.js";
     var config = {
-      dataUrl: buildUrl + "/6000.3.0f1-minsize-webgl2-manualBuild.data.unityweb",
-      frameworkUrl: buildUrl + "/6000.3.0f1-minsize-webgl2-manualBuild.framework.js.unityweb",
-      codeUrl: buildUrl + "/6000.3.0f1-minsize-webgl2-manualBuild.wasm.unityweb",
+      dataUrl: buildUrl + "/6000.3.0f1-minsize-webgpu-manualBuild.data.unityweb",
+      frameworkUrl: buildUrl + "/6000.3.0f1-minsize-webgpu-manualBuild.framework.js.unityweb",
+      codeUrl: buildUrl + "/6000.3.0f1-minsize-webgpu-manualBuild.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Train Game",

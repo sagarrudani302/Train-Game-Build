@@ -61,7 +61,9 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      gap: 28px;
+      gap: min(4vh, 28px);
+      padding: 3vh 4vw;
+      box-sizing: border-box;
 
       opacity: 1;
       visibility: visible;
@@ -82,23 +84,26 @@
     }
 
     #unity-loading-container .game-logo {
-      width: 42%;
-      max-width: 360px;
+      width: auto;
       height: auto;
+      max-width: min(42vw, 360px);
+      max-height: 24vh;
       margin: 0 auto;
     }
 
     #unity-loading-container .brand-logo {
-      width: 16%;
-      max-width: 130px;
+      width: auto;
       height: auto;
+      max-width: min(16vw, 130px);
+      max-height: 8vh;
     }
 
     #unity-loading-bar {
       position: relative;
-      width: 40%;
-      max-width: 420px;
-      height: 18px;
+      width: min(40vw, 420px);
+      min-width: 200px;
+      height: clamp(10px, 2.2vh, 18px);
+      flex-shrink: 0;
       background-image: url('loading-bar-bg.webp');
       background-size: 100% 100%;
       background-repeat: no-repeat;

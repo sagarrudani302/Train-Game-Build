@@ -5,9 +5,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Start loading assets right away, to have them (partly) loaded already when they are requested -->
-  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.4.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
-  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.4.framework.js.unityweb" as="script">
-  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.4.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.5.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.5.framework.js.unityweb" as="script">
+  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.5.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
   <title>Paint Game</title>
   <style>
     * {
@@ -186,14 +186,14 @@
       <div id="unity-loading-bar-inner"></div>
     </div>
   </div>
-  <script src="Build/Color_3D_Build_Webgl_0.4.loader.js"></script>
+  <script src="Build/Color_3D_Build_Webgl_0.5.loader.js"></script>
   <script>
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/Color_3D_Build_Webgl_0.4.loader.js";
+    var loaderUrl = buildUrl + "/Color_3D_Build_Webgl_0.5.loader.js";
     var config = {
-      dataUrl: buildUrl + "/Color_3D_Build_Webgl_0.4.data.unityweb",
-      frameworkUrl: buildUrl + "/Color_3D_Build_Webgl_0.4.framework.js.unityweb",
-      codeUrl: buildUrl + "/Color_3D_Build_Webgl_0.4.wasm.unityweb",
+      dataUrl: buildUrl + "/Color_3D_Build_Webgl_0.5.data.unityweb",
+      frameworkUrl: buildUrl + "/Color_3D_Build_Webgl_0.5.framework.js.unityweb",
+      codeUrl: buildUrl + "/Color_3D_Build_Webgl_0.5.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Paint Game",
@@ -204,6 +204,24 @@
     if(isMobile) {
       var maxPixelRatioMobile = 2.0;
       config.devicePixelRatio = Math.min(window.devicePixelRatio, maxPixelRatioMobile);
+    }
+
+    // Some mobile browsers report stale viewport dimensions for a moment right after
+    // an orientation change, so Unity's canvas can lock in the wrong size and render
+    // cropped/zoomed until something else forces a fresh layout (e.g. toggling fullscreen).
+    // Re-dispatch a resize event after a short settle delay so Unity's own canvas-resize
+    // handling re-runs against the now-correct dimensions.
+    var orientationSettleTimeout;
+    function handleOrientationSettle() {
+      clearTimeout(orientationSettleTimeout);
+      orientationSettleTimeout = setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    }
+
+    window.addEventListener('orientationchange', handleOrientationSettle);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleOrientationSettle);
     }
 
     var canvas = document.querySelector("#unity-canvas");

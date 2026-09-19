@@ -2,25 +2,36 @@
   <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="ArvindEncounter" preserve="all" />
     <type fullname="BasicRigidBodyPush" preserve="all" />
+    <type fullname="BHPSLogoTrigger" preserve="all" />
     <type fullname="FirstTimeTutorialController" preserve="all" />
     <type fullname="LevelIntroSkipController" preserve="all" />
     <type fullname="MobileControlsToggle" preserve="all" />
     <type fullname="MobileDisableAutoSwitchControls" preserve="all" />
+    <type fullname="ObjectiveItemUI" preserve="all" />
+    <type fullname="ObjectiveOutline" preserve="all" />
     <type fullname="ObjectiveUIController" preserve="all" />
     <type fullname="OutfitSwitcher" preserve="all" />
     <type fullname="PatrolWalker" preserve="all" />
+    <type fullname="PersonOneTrigger" preserve="all" />
     <type fullname="PlayerControlHandoff" preserve="all" />
     <type fullname="QuizFlowController" preserve="all" />
     <type fullname="QuizWalkCutscene" preserve="all" />
     <type fullname="RootMotionDuringState" preserve="all" />
+    <type fullname="SlowRotate" preserve="all" />
     <type fullname="StarterAssets.StarterAssetsInputs" preserve="all" />
     <type fullname="StarterAssets.ThirdPersonController" preserve="all" />
     <type fullname="StarterAssets.UICanvasControllerInput" preserve="all" />
     <type fullname="StreetAmbienceController" preserve="all" />
+    <type fullname="SubtitleController" preserve="all" />
+    <type fullname="SubtitleTimelineDriver" preserve="all" />
+    <type fullname="SubtitleTrack" preserve="all" />
+    <type fullname="TokoSuryaTrigger" preserve="all" />
     <type fullname="UIBounceAnimation" preserve="all" />
     <type fullname="UITouchLookZone" preserve="all" />
     <type fullname="UIVirtualJoystick" preserve="all" />
+    <type fullname="WrongWayCollisionController" preserve="all" />
     <type fullname="QuizOptionUI" preserve="nothing" serialized="true" />
+    <type fullname="SubtitleCue" preserve="nothing" serialized="true" />
     <type fullname="UITouchLookZone/Event" preserve="nothing" serialized="true" />
     <type fullname="UIVirtualJoystick/Event" preserve="nothing" serialized="true" />
   </assembly>
@@ -143,6 +154,7 @@
     <type fullname="UnityEngine.Events.PersistentCallGroup" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.Events.PersistentListenerMode" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.ExposedReference`1" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.RectOffset" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.RenderingLayerMask" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="UnityEngine.DirectorModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -155,6 +167,7 @@
     <type fullname="UnityEngine.MeshCollider" preserve="all" />
     <type fullname="UnityEngine.PhysicsMaterial" preserve="all" />
     <type fullname="UnityEngine.Rigidbody" preserve="all" />
+    <type fullname="UnityEngine.SphereCollider" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Font" preserve="all" />
@@ -164,9 +177,12 @@
     <type fullname="UnityEngine.EventSystems.EventSystem" preserve="all" />
     <type fullname="UnityEngine.UI.Button" preserve="all" />
     <type fullname="UnityEngine.UI.CanvasScaler" preserve="all" />
+    <type fullname="UnityEngine.UI.ContentSizeFitter" preserve="all" />
     <type fullname="UnityEngine.UI.GraphicRaycaster" preserve="all" />
+    <type fullname="UnityEngine.UI.HorizontalLayoutGroup" preserve="all" />
     <type fullname="UnityEngine.UI.Image" preserve="all" />
     <type fullname="UnityEngine.UI.Shadow" preserve="all" />
+    <type fullname="UnityEngine.UI.VerticalLayoutGroup" preserve="all" />
     <type fullname="UnityEngine.UI.AnimationTriggers" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.UI.Button/ButtonClickedEvent" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.UI.ColorBlock" preserve="nothing" serialized="true" />

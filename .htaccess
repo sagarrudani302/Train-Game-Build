@@ -1,0 +1,29 @@
+<IfModule mod_mime.c>
+  # Correct MIME types for WebGL files
+  AddType application/wasm .wasm
+  AddType application/javascript .js
+  AddType application/octet-stream .data .unityweb
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Tell the browser that .unityweb files are Brotli compressed
+  <FilesMatch "\.unityweb$">
+    Header set Content-Encoding br
+  </FilesMatch>
+
+  # Explicitly match WASM / Data files if needed
+  <FilesMatch "\.wasm\.unityweb$">
+    Header set Content-Type application/wasm
+    Header set Content-Encoding br
+  </FilesMatch>
+  
+  <FilesMatch "\.data\.unityweb$">
+    Header set Content-Type application/octet-stream
+    Header set Content-Encoding br
+  </FilesMatch>
+
+  <FilesMatch "\.framework\.js\.unityweb$">
+    Header set Content-Type application/javascript
+    Header set Content-Encoding br
+  </FilesMatch>
+</IfModule>

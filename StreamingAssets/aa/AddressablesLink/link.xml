@@ -4,7 +4,9 @@
     <type fullname="BasicRigidBodyPush" preserve="all" />
     <type fullname="BHPSLogoTrigger" preserve="all" />
     <type fullname="FirstTimeTutorialController" preserve="all" />
+    <type fullname="GameCursorController" preserve="all" />
     <type fullname="LevelIntroSkipController" preserve="all" />
+    <type fullname="LevelSessionGuard" preserve="all" />
     <type fullname="MobileControlsToggle" preserve="all" />
     <type fullname="MobileDisableAutoSwitchControls" preserve="all" />
     <type fullname="ObjectiveItemUI" preserve="all" />

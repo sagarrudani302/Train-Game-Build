@@ -5,9 +5,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Start loading assets right away, to have them (partly) loaded already when they are requested -->
-  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.6-16.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
-  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.6-16.framework.js.unityweb" as="script">
-  <link rel="preload" href="Build/Color_3D_Build_Webgl_0.6-16.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="Build/Fading City.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="Build/Fading City.framework.js.unityweb" as="script">
+  <link rel="preload" href="Build/Fading City.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
   <title>Fading City</title>
   <style>
     * {
@@ -186,18 +186,28 @@
       <div id="unity-loading-bar-inner"></div>
     </div>
   </div>
-  <script src="Build/Color_3D_Build_Webgl_0.6-16.loader.js"></script>
+  <script src="Build/Fading City.loader.js"></script>
   <script>
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/Color_3D_Build_Webgl_0.6-16.loader.js";
+    var loaderUrl = buildUrl + "/Fading City.loader.js";
     var config = {
-      dataUrl: buildUrl + "/Color_3D_Build_Webgl_0.6-16.data.unityweb",
-      frameworkUrl: buildUrl + "/Color_3D_Build_Webgl_0.6-16.framework.js.unityweb",
-      codeUrl: buildUrl + "/Color_3D_Build_Webgl_0.6-16.wasm.unityweb",
+      dataUrl: buildUrl + "/Fading City.data.unityweb",
+      frameworkUrl: buildUrl + "/Fading City.framework.js.unityweb",
+      codeUrl: buildUrl + "/Fading City.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Fading City",
       productVersion: "0.1",
+      // Called by Unity's loader for uncaught runtime errors. Returning true stops its default
+      // pop-up. A single audio clip the browser can't decode (EncodingError) is not worth stopping
+      // the player with a blocking dialog - that clip just stays silent; it is logged instead.
+      errorHandler: function (message, filename, lineno) {
+        if (/EncodingError|Unable to decode audio data/i.test(String(message))) {
+          console.warn("[Game] Audio clip could not be decoded - continuing without it: " + message);
+          return true;
+        }
+        return false;
+      },
     };
 
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);

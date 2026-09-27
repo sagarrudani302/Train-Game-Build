@@ -3,8 +3,17 @@
     <type fullname="ArvindEncounter" preserve="all" />
     <type fullname="BasicRigidBodyPush" preserve="all" />
     <type fullname="BHPSLogoTrigger" preserve="all" />
+    <type fullname="CertificateInteraction" preserve="all" />
+    <type fullname="DealerObjective1Trigger" preserve="all" />
     <type fullname="FirstTimeTutorialController" preserve="all" />
     <type fullname="GameCursorController" preserve="all" />
+    <type fullname="GrantPlayerControlOnStart" preserve="all" />
+    <type fullname="Level2CareerPinController" preserve="all" />
+    <type fullname="Level2GameCursorController" preserve="all" />
+    <type fullname="Level2IntroSkipController" preserve="all" />
+    <type fullname="Level2ObjectiveQueueController" preserve="all" />
+    <type fullname="Level2ObjectiveTrigger" preserve="all" />
+    <type fullname="Level2QuizFlowController" preserve="all" />
     <type fullname="LevelIntroSkipController" preserve="all" />
     <type fullname="LevelSessionGuard" preserve="all" />
     <type fullname="MobileControlsToggle" preserve="all" />
@@ -139,6 +148,7 @@
     <type fullname="UnityEngine.Cubemap" preserve="all" />
     <type fullname="UnityEngine.GameObject" preserve="all" />
     <type fullname="UnityEngine.Light" preserve="all" />
+    <type fullname="UnityEngine.LightingSettings" preserve="all" />
     <type fullname="UnityEngine.LightmapSettings" preserve="all" />
     <type fullname="UnityEngine.Material" preserve="all" />
     <type fullname="UnityEngine.Mesh" preserve="all" />
@@ -150,14 +160,15 @@
     <type fullname="UnityEngine.Shader" preserve="all" />
     <type fullname="UnityEngine.SkinnedMeshRenderer" preserve="all" />
     <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
     <type fullname="UnityEngine.Texture2D" preserve="all" />
     <type fullname="UnityEngine.Transform" preserve="all" />
     <type fullname="UnityEngine.Events.ArgumentCache" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.Events.PersistentCallGroup" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.Events.PersistentListenerMode" preserve="nothing" serialized="true" />
-    <type fullname="UnityEngine.ExposedReference`1" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.RectOffset" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.RenderingLayerMask" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.ExposedReference`1" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="UnityEngine.DirectorModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Playables.PlayableDirector" preserve="all" />
@@ -177,6 +188,7 @@
   <assembly fullname="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.EventSystems.BaseInput" preserve="all" />
     <type fullname="UnityEngine.EventSystems.EventSystem" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.PhysicsRaycaster" preserve="all" />
     <type fullname="UnityEngine.UI.Button" preserve="all" />
     <type fullname="UnityEngine.UI.CanvasScaler" preserve="all" />
     <type fullname="UnityEngine.UI.ContentSizeFitter" preserve="all" />

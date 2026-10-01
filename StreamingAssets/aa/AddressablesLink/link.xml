@@ -4,10 +4,12 @@
     <type fullname="BasicRigidBodyPush" preserve="all" />
     <type fullname="BHPSLogoTrigger" preserve="all" />
     <type fullname="CertificateInteraction" preserve="all" />
+    <type fullname="ContractorPinInteraction" preserve="all" />
     <type fullname="DealerObjective1Trigger" preserve="all" />
     <type fullname="FirstTimeTutorialController" preserve="all" />
     <type fullname="GameCursorController" preserve="all" />
     <type fullname="GrantPlayerControlOnStart" preserve="all" />
+    <type fullname="InteractableClickFX" preserve="all" />
     <type fullname="Level2CareerPinController" preserve="all" />
     <type fullname="Level2GameCursorController" preserve="all" />
     <type fullname="Level2IntroSkipController" preserve="all" />
@@ -51,9 +53,6 @@
     <type fullname="CodeStage.AdvancedFPSCounter.CountersData.DeviceInfoCounterData" preserve="nothing" serialized="true" />
     <type fullname="CodeStage.AdvancedFPSCounter.CountersData.FPSCounterData" preserve="nothing" serialized="true" />
     <type fullname="CodeStage.AdvancedFPSCounter.CountersData.MemoryCounterData" preserve="nothing" serialized="true" />
-  </assembly>
-  <assembly fullname="Linework, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-    <type fullname="Linework.FastOutline.Outline" preserve="all" />
   </assembly>
   <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
     <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
@@ -175,6 +174,10 @@
   </assembly>
   <assembly fullname="UnityEngine.DirectorModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Playables.PlayableDirector" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.ParticleSystem" preserve="all" />
+    <type fullname="UnityEngine.ParticleSystemRenderer" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.BoxCollider" preserve="all" />

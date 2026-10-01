@@ -5,9 +5,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Start loading assets right away, to have them (partly) loaded already when they are requested -->
-  <link rel="preload" href="Build/Fading City_0.2.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
-  <link rel="preload" href="Build/Fading City_0.2.framework.js.unityweb" as="script">
-  <link rel="preload" href="Build/Fading City_0.2.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="Build/Fading City_0.3.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="Build/Fading City_0.3.framework.js.unityweb" as="script">
+  <link rel="preload" href="Build/Fading City_0.3.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
   <title>Fading City</title>
   <style>
     * {
@@ -186,18 +186,18 @@
       <div id="unity-loading-bar-inner"></div>
     </div>
   </div>
-  <script src="Build/Fading City_0.2.loader.js"></script>
+  <script src="Build/Fading City_0.3.loader.js"></script>
   <script>
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/Fading City_0.2.loader.js";
+    var loaderUrl = buildUrl + "/Fading City_0.3.loader.js";
     var config = {
-      dataUrl: buildUrl + "/Fading City_0.2.data.unityweb",
-      frameworkUrl: buildUrl + "/Fading City_0.2.framework.js.unityweb",
-      codeUrl: buildUrl + "/Fading City_0.2.wasm.unityweb",
+      dataUrl: buildUrl + "/Fading City_0.3.data.unityweb",
+      frameworkUrl: buildUrl + "/Fading City_0.3.framework.js.unityweb",
+      codeUrl: buildUrl + "/Fading City_0.3.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Fading City",
-      productVersion: "0.2",
+      productVersion: "0.3",
       // Called by Unity's loader for uncaught runtime errors. Returning true stops its default
       // pop-up. A single audio clip the browser can't decode (EncodingError) is not worth stopping
       // the player with a blocking dialog - that clip just stays silent; it is logged instead.

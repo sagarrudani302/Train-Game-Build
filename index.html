@@ -3,11 +3,33 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!-- Sentry: catches page-load/browser-level failures that happen BEFORE Unity itself can
+       start (wasm/data fetch failures, out-of-memory during the initial WebGL allocation,
+       browser incompatibility) - Unity's own Sentry SDK (Assets/Resources/Sentry/
+       SentryOptions.asset) can't see these since it only initializes once Unity is already
+       running. Loaded first, before anything else, so it's active for the page's whole
+       lifecycle. Same DSN/project as the in-game SDK, so both halves land in one unified
+       issue stream in the Sentry dashboard. environment is tagged by hostname so staging
+       and production reports aren't mixed together. -->
+  <script
+    src="https://browser.sentry-cdn.com/11.4.0/bundle.min.js"
+    integrity="sha384-yR8WDlaM5tdf6UYPdUkCyZhW0OUuGNnKT8haW281Se9cj9eZP3z+iKwFvivogWnz"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    if (window.Sentry) {
+      Sentry.init({
+        dsn: "https://d14a436f8c966ec8c0374d5533a31632@o4512191277826048.ingest.us.sentry.io/4512191286280192",
+        environment: /staging/i.test(location.hostname) ? "staging" : "production",
+        release: "Fading City@0.3",
+      });
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Start loading assets right away, to have them (partly) loaded already when they are requested -->
-  <link rel="preload" href="Build/Fading City_0.5.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
-  <link rel="preload" href="Build/Fading City_0.5.framework.js.unityweb" as="script">
-  <link rel="preload" href="Build/Fading City_0.5.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="Build/Fading City_0.9.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="Build/Fading City_0.9.framework.js.unityweb" as="script">
+  <link rel="preload" href="Build/Fading City_0.9.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
   <title>Fading City</title>
   <style>
     * {
@@ -186,14 +208,14 @@
       <div id="unity-loading-bar-inner"></div>
     </div>
   </div>
-  <script src="Build/Fading City_0.5.loader.js"></script>
+  <script src="Build/Fading City_0.9.loader.js"></script>
   <script>
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/Fading City_0.5.loader.js";
+    var loaderUrl = buildUrl + "/Fading City_0.9.loader.js";
     var config = {
-      dataUrl: buildUrl + "/Fading City_0.5.data.unityweb",
-      frameworkUrl: buildUrl + "/Fading City_0.5.framework.js.unityweb",
-      codeUrl: buildUrl + "/Fading City_0.5.wasm.unityweb",
+      dataUrl: buildUrl + "/Fading City_0.9.data.unityweb",
+      frameworkUrl: buildUrl + "/Fading City_0.9.framework.js.unityweb",
+      codeUrl: buildUrl + "/Fading City_0.9.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Fading City",
@@ -201,10 +223,20 @@
       // Called by Unity's loader for uncaught runtime errors. Returning true stops its default
       // pop-up. A single audio clip the browser can't decode (EncodingError) is not worth stopping
       // the player with a blocking dialog - that clip just stays silent; it is logged instead.
+      // Explicitly reported to Sentry too (not just relying on its own window.onerror hook) -
+      // Unity's wasm runtime can route errors through here in a way the generic hook doesn't
+      // always see, and this gives the report a clear "unity-runtime-error" tag to filter on.
       errorHandler: function (message, filename, lineno) {
         if (/EncodingError|Unable to decode audio data/i.test(String(message))) {
           console.warn("[Game] Audio clip could not be decoded - continuing without it: " + message);
           return true;
+        }
+        if (window.Sentry) {
+          Sentry.captureMessage("Unity runtime error: " + message, {
+            level: "error",
+            tags: { source: "unity-runtime-error" },
+            extra: { filename: filename, lineno: lineno },
+          });
         }
         return false;
       },
@@ -231,6 +263,17 @@
         window.unityGameInstance = unityInstance;
         loadingContainer.classList.add("finished");
       }).catch(function(message) {
+        // The single most important failure point for "what happened before Unity even
+        // started" - createUnityInstance itself failed (wasm compile error, out-of-memory on
+        // the initial allocation, browser incompatibility...). Reported explicitly with its
+        // own tag so these are easy to find/filter in the Sentry dashboard separately from
+        // in-game errors.
+        if (window.Sentry) {
+          Sentry.captureMessage("Unity failed to start: " + message, {
+            level: "fatal",
+            tags: { source: "unity-startup-failure" },
+          });
+        }
         alert(message);
       });
     };

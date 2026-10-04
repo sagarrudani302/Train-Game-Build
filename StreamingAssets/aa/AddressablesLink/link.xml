@@ -6,12 +6,12 @@
     <type fullname="CertificateInteraction" preserve="all" />
     <type fullname="ContractorPinInteraction" preserve="all" />
     <type fullname="DealerObjective1Trigger" preserve="all" />
-    <type fullname="DesktopEdgeLookController" preserve="all" />
     <type fullname="FirstTimeTutorialController" preserve="all" />
     <type fullname="GameCursorController" preserve="all" />
     <type fullname="GrantPlayerControlOnStart" preserve="all" />
     <type fullname="InteractableClickFX" preserve="all" />
     <type fullname="Level2CareerPinController" preserve="all" />
+    <type fullname="Level2DesktopInteractPrompt" preserve="all" />
     <type fullname="Level2GameCursorController" preserve="all" />
     <type fullname="Level2IntroSkipController" preserve="all" />
     <type fullname="Level2ObjectiveQueueController" preserve="all" />

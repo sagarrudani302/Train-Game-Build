@@ -21,15 +21,25 @@
       Sentry.init({
         dsn: "https://d14a436f8c966ec8c0374d5533a31632@o4512191277826048.ingest.us.sentry.io/4512191286280192",
         environment: /staging/i.test(location.hostname) ? "staging" : "production",
-        release: "Fading City@0.3",
+        release: "Fading City@1.3",
+        // A refused pointer-lock request is harmless (the cursor just stays free until the next
+        // click) - it was ~2,800 events a week drowning out real problems.
+        ignoreErrors: [/pointer ?lock/i],
       });
+      // The player from their last session (written by MobileDetect.jslib once /me succeeds),
+      // so a failure before the game even starts - out of memory, broken download - still
+      // says who it happened to. Replaced as soon as this session's login is confirmed.
+      try {
+        var savedUser = JSON.parse(localStorage.getItem("fc_sentry_user") || "null");
+        if (savedUser && savedUser.id) Sentry.setUser(savedUser);
+      } catch (e) {}
     }
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Start loading assets right away, to have them (partly) loaded already when they are requested -->
-  <link rel="preload" href="Build/Fading City_1.2_Staging.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
-  <link rel="preload" href="Build/Fading City_1.2_Staging.framework.js.unityweb" as="script">
-  <link rel="preload" href="Build/Fading City_1.2_Staging.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="Build/Fading City_1.3_Staging.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="Build/Fading City_1.3_Staging.framework.js.unityweb" as="script">
+  <link rel="preload" href="Build/Fading City_1.3_Staging.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
   <title>Fading City</title>
   <style>
     * {
@@ -178,6 +188,15 @@
       50% { transform: rotate(90deg); }
     }
 
+    /* Same, for mobile devices index.html's script detects but the media query below misses
+       ("Desktop site" mode lays the page out wider than 768px) */
+    body.mobile-portrait #rotate-overlay {
+      display: flex !important;
+    }
+    body.mobile-portrait #unity-container {
+      display: none !important;
+    }
+
     /* Show overlay only on portrait mobile */
     @media screen and (max-width: 768px) and (orientation: portrait) {
       #rotate-overlay {
@@ -208,18 +227,18 @@
       <div id="unity-loading-bar-inner"></div>
     </div>
   </div>
-  <script src="Build/Fading City_1.2_Staging.loader.js"></script>
+  <script src="Build/Fading City_1.3_Staging.loader.js"></script>
   <script>
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/Fading City_1.2_Staging.loader.js";
+    var loaderUrl = buildUrl + "/Fading City_1.3_Staging.loader.js";
     var config = {
-      dataUrl: buildUrl + "/Fading City_1.2_Staging.data.unityweb",
-      frameworkUrl: buildUrl + "/Fading City_1.2_Staging.framework.js.unityweb",
-      codeUrl: buildUrl + "/Fading City_1.2_Staging.wasm.unityweb",
+      dataUrl: buildUrl + "/Fading City_1.3_Staging.data.unityweb",
+      frameworkUrl: buildUrl + "/Fading City_1.3_Staging.framework.js.unityweb",
+      codeUrl: buildUrl + "/Fading City_1.3_Staging.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Fading City",
-      productVersion: "0.3",
+      productVersion: "1.3",
       // Called by Unity's loader for uncaught runtime errors. Returning true stops its default
       // pop-up. A single audio clip the browser can't decode (EncodingError) is not worth stopping
       // the player with a blocking dialog - that clip just stays silent; it is logged instead.
@@ -229,6 +248,13 @@
       errorHandler: function (message, filename, lineno) {
         if (/EncodingError|Unable to decode audio data/i.test(String(message))) {
           console.warn("[Game] Audio clip could not be decoded - continuing without it: " + message);
+          return true;
+        }
+        // The browser refusing pointer lock (no recent click, phone, Esc just pressed...) - the
+        // game carries on with a visible cursor and locks on the next click. Was the blocking
+        // pop-up ~1,000 players saw, and for some it came back on every tap.
+        if (/pointer ?lock/i.test(String(message))) {
+          console.warn("[Game] Pointer lock refused by the browser - ignored: " + message);
           return true;
         }
         if (window.Sentry) {
@@ -242,13 +268,138 @@
       },
     };
 
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if(isMobile) {
-      // 1.5, not 2.0: ~44% fewer pixels to shade every frame - a big part of keeping phones
-      // from running hot over long sessions, and hard to tell apart on a phone-sized screen.
-      var maxPixelRatioMobile = 1.5;
-      config.devicePixelRatio = Math.min(window.devicePixelRatio, maxPixelRatioMobile);
+    // Same rule as IsMobileBrowser in Assets/Plugins/WebGL/MobileDetect.jslib - keep in step.
+    // The user agent alone misses phones in "Desktop site" mode (they report a desktop UA), so a
+    // device whose only pointer is a finger counts too; iPadOS reports "Macintosh" + touch.
+    function detectMobile() {
+      var ua = navigator.userAgent;
+      if (/iPhone|iPad|iPod|Android/i.test(ua)) return true;
+      var touchPoints = navigator.maxTouchPoints || 0;
+      if (/Macintosh/i.test(ua) && touchPoints > 1) return true;
+      return touchPoints > 0 && !!window.matchMedia &&
+        window.matchMedia("(pointer: coarse)").matches &&
+        !window.matchMedia("(any-pointer: fine)").matches;
     }
+    var isMobile = detectMobile();
+
+    // Largest canvas the GPU can render to. "Desktop site" phones lay out a ~980px-wide page at
+    // a ~3x pixel ratio, asking for a 4297px-high canvas on GPUs that stop at 4096 - Unity's
+    // RenderTexture creation then failed every frame and the screen came out broken.
+    // The same throwaway context also reads the GPU's name for the Sentry device details below.
+    function probeGpu() {
+      var result = { maxSize: 4096, renderer: "unknown", webgl: "none" };
+      try {
+        var probe = document.createElement("canvas");
+        var gl = probe.getContext("webgl2");
+        result.webgl = gl ? "2" : "none";
+        if (!gl) {
+          gl = probe.getContext("webgl");
+          if (gl) result.webgl = "1";
+        }
+        if (gl) {
+          var size = Math.min(gl.getParameter(gl.MAX_RENDERBUFFER_SIZE), gl.getParameter(gl.MAX_TEXTURE_SIZE));
+          if (size > 0) result.maxSize = size;
+          var debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+          result.renderer = String(gl.getParameter(debugInfo ? debugInfo.UNMASKED_RENDERER_WEBGL : gl.RENDERER) || "unknown");
+          var lose = gl.getExtension("WEBGL_lose_context");
+          if (lose) lose.loseContext();
+        }
+      } catch (e) {}
+      return result;
+    }
+    var gpuInfo = probeGpu();
+
+    // 1.5 on mobile, not 2.0+: ~44% fewer pixels to shade every frame - a big part of keeping
+    // phones from running hot over long sessions, and hard to tell apart on a phone-sized
+    // screen. Then, on every device, never more than the GPU can draw: measured against the
+    // longest side the page can ever get (screen or window, either orientation), with a little
+    // margin, since this is fixed once at startup and the window can rotate/resize later.
+    var pixelRatio = window.devicePixelRatio || 1;
+    if (isMobile) {
+      var maxPixelRatioMobile = 1.5;
+      pixelRatio = Math.min(pixelRatio, maxPixelRatioMobile);
+    }
+    var longestSide = Math.max(screen.width || 0, screen.height || 0, window.innerWidth, window.innerHeight,
+      document.documentElement.clientWidth || 0, document.documentElement.clientHeight || 0);
+    if (longestSide > 0) {
+      pixelRatio = Math.min(pixelRatio, (gpuInfo.maxSize * 0.95) / longestSide);
+    }
+    config.devicePixelRatio = pixelRatio;
+
+    // Device details for Sentry, so a player's report shows what they were actually playing on.
+    // Sentry's own detection can't tell: Chrome hides the phone model in its user agent (every
+    // Android phone reads as "Android 10; K"), and Unity's SDK reports the game's own memory as
+    // the device's. Collected once; the browser SDK gets them as searchable tags (e.g.
+    // phone_model:SM-A146B, ram_gb:2) plus a "Device details" panel, and the game reads
+    // window.fcDeviceInfo (Assets/Plugins/WebGL/MobileDetect.jslib) to put the same tags on
+    // in-game errors. Device facts only - nothing that identifies the person.
+    //   phone_model / os_version: Chrome, Edge, Samsung Internet only (Client Hints, asked for
+    //     below). Safari never gives the model - an iPhone stays "iPhone".
+    //   ram_gb: Chrome/Edge only, rounded and capped at 8 by the browser.
+    window.fcDeviceInfo = {
+      device_class: isMobile ? "mobile" : "desktop",
+      phone_model: /iPhone/i.test(navigator.userAgent) ? "iPhone" : (/iPad/i.test(navigator.userAgent) ? "iPad" : (isMobile ? "unknown" : "desktop")),
+      os_version: "unknown",
+      ram_gb: navigator.deviceMemory ? String(navigator.deviceMemory) : "unknown",
+      cpu_cores: navigator.hardwareConcurrency ? String(navigator.hardwareConcurrency) : "unknown",
+      screen: (screen.width || 0) + "x" + (screen.height || 0) + "@" + (Math.round((window.devicePixelRatio || 1) * 100) / 100),
+      canvas_dpr: String(Math.round(pixelRatio * 100) / 100),
+      gpu: gpuInfo.renderer.slice(0, 190),
+      gpu_max_texture: String(gpuInfo.maxSize),
+      webgl: gpuInfo.webgl,
+      network: "unknown",
+      storage_free_mb: "unknown"
+    };
+
+    function reportDeviceInfo() {
+      if (!window.Sentry) return;
+      try {
+        Sentry.setTags(window.fcDeviceInfo);
+        Sentry.setContext("Device details", window.fcDeviceInfo);
+      } catch (e) {}
+    }
+
+    try {
+      var connection = navigator.connection;
+      if (connection && connection.effectiveType) {
+        window.fcDeviceInfo.network = connection.effectiveType + (connection.downlink ? " " + connection.downlink + "Mbps" : "");
+      }
+    } catch (e) {}
+    reportDeviceInfo();
+
+    // The asynchronous ones - each fills in its value and re-reports when it arrives (well
+    // under a second, long before the game itself has loaded).
+    try {
+      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+        navigator.userAgentData.getHighEntropyValues(["model", "platformVersion"]).then(function (hints) {
+          if (hints.model) window.fcDeviceInfo.phone_model = String(hints.model).slice(0, 100);
+          if (hints.platform || hints.platformVersion) {
+            window.fcDeviceInfo.os_version = ((hints.platform || "") + " " + (hints.platformVersion || "")).trim();
+          }
+          reportDeviceInfo();
+        }).catch(function () {});
+      }
+    } catch (e) {}
+    try {
+      if (navigator.storage && navigator.storage.estimate) {
+        navigator.storage.estimate().then(function (estimate) {
+          if (estimate && estimate.quota) {
+            window.fcDeviceInfo.storage_free_mb = String(Math.round((estimate.quota - (estimate.usage || 0)) / 1048576));
+          }
+          reportDeviceInfo();
+        }).catch(function () {});
+      }
+    } catch (e) {}
+
+    // The rotate-to-landscape overlay's CSS rule only matches pages narrower than 768px, which a
+    // "Desktop site" phone (~980px wide) never is - so it's also switched on from here for any
+    // device detected as mobile and held upright.
+    function updateRotateOverlay() {
+      document.body.classList.toggle("mobile-portrait", isMobile && window.innerHeight > window.innerWidth);
+    }
+    updateRotateOverlay();
+    window.addEventListener("resize", updateRotateOverlay);
+    window.addEventListener("orientationchange", updateRotateOverlay);
 
     var canvas = document.querySelector("#unity-canvas");
     var loadingContainer = document.querySelector("#unity-loading-container");

@@ -21,9 +21,13 @@
     <type fullname="LevelSessionGuard" preserve="all" />
     <type fullname="MobileControlsToggle" preserve="all" />
     <type fullname="MobileDisableAutoSwitchControls" preserve="all" />
+    <type fullname="ObjectiveClickPart" preserve="all" />
     <type fullname="ObjectiveItemUI" preserve="all" />
     <type fullname="ObjectiveOutline" preserve="all" />
+    <type fullname="ObjectiveRoomZone" preserve="all" />
     <type fullname="ObjectiveUIController" preserve="all" />
+    <type fullname="ObjectiveWalkCutscene" preserve="all" />
+    <type fullname="ObjectiveWrongAreaFeedback" preserve="all" />
     <type fullname="OutfitSwitcher" preserve="all" />
     <type fullname="PatrolWalker" preserve="all" />
     <type fullname="PersonOneTrigger" preserve="all" />
@@ -44,11 +48,13 @@
     <type fullname="UIBounceAnimation" preserve="all" />
     <type fullname="UITouchLookZone" preserve="all" />
     <type fullname="UIVirtualJoystick" preserve="all" />
+    <type fullname="WallSurfaceSideFilter" preserve="all" />
     <type fullname="WrongWayCollisionController" preserve="all" />
     <type fullname="QuizOptionUI" preserve="nothing" serialized="true" />
     <type fullname="SubtitleCue" preserve="nothing" serialized="true" />
     <type fullname="UITouchLookZone/Event" preserve="nothing" serialized="true" />
     <type fullname="UIVirtualJoystick/Event" preserve="nothing" serialized="true" />
+    <type fullname="Level2IntroSkipController/ResumeSpawn" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="CodeStage.AdvancedFPSCounter.AFPSCounter" preserve="all" />
@@ -76,23 +82,23 @@
     <type fullname="Unity.Cinemachine.CinemachineThirdPersonFollow/ObstacleSettings" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.LensSettings" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.LensSettings/PhysicalSettings" preserve="nothing" serialized="true" />
+    <type fullname="Unity.Cinemachine.PrioritySettings" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.NoiseSettings/NoiseParams" preserve="nothing" serialized="true" />
     <type fullname="Unity.Cinemachine.NoiseSettings/TransformNoiseParams" preserve="nothing" serialized="true" />
-    <type fullname="Unity.Cinemachine.PrioritySettings" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Unity.InputSystem, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.InputSystem.InputActionAsset" preserve="all" />
     <type fullname="UnityEngine.InputSystem.InputActionReference" preserve="all" />
     <type fullname="UnityEngine.InputSystem.PlayerInput" preserve="all" />
     <type fullname="UnityEngine.InputSystem.UI.InputSystemUIInputModule" preserve="all" />
+    <type fullname="UnityEngine.InputSystem.PlayerInput/ControlsChangedEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.InputSystem.PlayerInput/DeviceLostEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.InputSystem.PlayerInput/DeviceRegainedEvent" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.InputSystem.InputAction" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.InputSystem.InputActionMap" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.InputSystem.InputBinding" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.InputSystem.InputControlScheme" preserve="nothing" serialized="true" />
     <type fullname="UnityEngine.InputSystem.InputControlScheme/DeviceRequirement" preserve="nothing" serialized="true" />
-    <type fullname="UnityEngine.InputSystem.PlayerInput/ControlsChangedEvent" preserve="nothing" serialized="true" />
-    <type fullname="UnityEngine.InputSystem.PlayerInput/DeviceLostEvent" preserve="nothing" serialized="true" />
-    <type fullname="UnityEngine.InputSystem.PlayerInput/DeviceRegainedEvent" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Rendering.Universal.UniversalAdditionalCameraData" preserve="all" />

@@ -21,7 +21,7 @@
       Sentry.init({
         dsn: "https://d14a436f8c966ec8c0374d5533a31632@o4512191277826048.ingest.us.sentry.io/4512191286280192",
         environment: /staging/i.test(location.hostname) ? "staging" : "production",
-        release: "Fading City@1.3",
+        release: "Fading City@1.4",
         // A refused pointer-lock request is harmless (the cursor just stays free until the next
         // click) - it was ~2,800 events a week drowning out real problems.
         ignoreErrors: [/pointer ?lock/i],
@@ -238,7 +238,7 @@
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Fading City",
-      productVersion: "1.3",
+      productVersion: "1.4",
       // Called by Unity's loader for uncaught runtime errors. Returning true stops its default
       // pop-up. A single audio clip the browser can't decode (EncodingError) is not worth stopping
       // the player with a blocking dialog - that clip just stays silent; it is logged instead.

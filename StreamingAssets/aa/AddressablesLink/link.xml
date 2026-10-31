@@ -17,6 +17,9 @@
     <type fullname="Level2ObjectiveQueueController" preserve="all" />
     <type fullname="Level2ObjectiveTrigger" preserve="all" />
     <type fullname="Level2QuizFlowController" preserve="all" />
+    <type fullname="Level4EnterRoomObjective" preserve="all" />
+    <type fullname="Level4HomeTransformation" preserve="all" />
+    <type fullname="Level4StreetTransformation" preserve="all" />
     <type fullname="LevelIntroSkipController" preserve="all" />
     <type fullname="LevelSessionGuard" preserve="all" />
     <type fullname="MobileControlsToggle" preserve="all" />
@@ -55,6 +58,9 @@
     <type fullname="UITouchLookZone/Event" preserve="nothing" serialized="true" />
     <type fullname="UIVirtualJoystick/Event" preserve="nothing" serialized="true" />
     <type fullname="Level2IntroSkipController/ResumeSpawn" preserve="nothing" serialized="true" />
+    <type fullname="Level4StreetTransformation/MaterialFade" preserve="nothing" serialized="true" />
+    <type fullname="Level4StreetTransformation/MaterialSwap" preserve="nothing" serialized="true" />
+    <type fullname="Level4StreetTransformation/StreetSide" preserve="nothing" serialized="true" />
   </assembly>
   <assembly fullname="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="CodeStage.AdvancedFPSCounter.AFPSCounter" preserve="all" />

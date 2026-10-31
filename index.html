@@ -21,7 +21,7 @@
       Sentry.init({
         dsn: "https://d14a436f8c966ec8c0374d5533a31632@o4512191277826048.ingest.us.sentry.io/4512191286280192",
         environment: /staging/i.test(location.hostname) ? "staging" : "production",
-        release: "Fading City@1.4",
+        release: "Fading City@1.5",
         // A refused pointer-lock request is harmless (the cursor just stays free until the next
         // click) - it was ~2,800 events a week drowning out real problems.
         ignoreErrors: [/pointer ?lock/i],
@@ -37,9 +37,9 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <!-- Start loading assets right away, to have them (partly) loaded already when they are requested -->
-  <link rel="preload" href="Build/Fading City_1.4-2_Staging.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
-  <link rel="preload" href="Build/Fading City_1.4-2_Staging.framework.js.unityweb" as="script">
-  <link rel="preload" href="Build/Fading City_1.4-2_Staging.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
+  <link rel="preload" href="Build/Fading City_1.5.data.unityweb" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="Build/Fading City_1.5.framework.js.unityweb" as="script">
+  <link rel="preload" href="Build/Fading City_1.5.wasm.unityweb" as="fetch" type="application/wasm" crossorigin>
   <title>Fading City</title>
   <style>
     * {
@@ -227,18 +227,18 @@
       <div id="unity-loading-bar-inner"></div>
     </div>
   </div>
-  <script src="Build/Fading City_1.4-2_Staging.loader.js"></script>
+  <script src="Build/Fading City_1.5.loader.js"></script>
   <script>
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/Fading City_1.4-2_Staging.loader.js";
+    var loaderUrl = buildUrl + "/Fading City_1.5.loader.js";
     var config = {
-      dataUrl: buildUrl + "/Fading City_1.4-2_Staging.data.unityweb",
-      frameworkUrl: buildUrl + "/Fading City_1.4-2_Staging.framework.js.unityweb",
-      codeUrl: buildUrl + "/Fading City_1.4-2_Staging.wasm.unityweb",
+      dataUrl: buildUrl + "/Fading City_1.5.data.unityweb",
+      frameworkUrl: buildUrl + "/Fading City_1.5.framework.js.unityweb",
+      codeUrl: buildUrl + "/Fading City_1.5.wasm.unityweb",
       streamingAssetsUrl: "StreamingAssets",
       companyName: "DefaultCompany",
       productName: "Fading City",
-      productVersion: "1.4",
+      productVersion: "1.5",
       // Called by Unity's loader for uncaught runtime errors. Returning true stops its default
       // pop-up. A single audio clip the browser can't decode (EncodingError) is not worth stopping
       // the player with a blocking dialog - that clip just stays silent; it is logged instead.
